@@ -50,7 +50,7 @@ for lt, ln, ds, vs in zip(lat,lon,des,vis):
 
 base_map.add_child(fg)
 
-base_map.save("Map of Explorations.html")
+base_map.save("map_of_explorations.html")
 
 
 
