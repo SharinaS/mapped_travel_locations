@@ -11,44 +11,42 @@ Version: 1.0
 
 '''
 
+#TODO: clean-up naming of variables
+
 
 import folium
 import pandas
 
-
 data = pandas.read_csv("places_visited.csv")
-lat = list(data["LATITUDE"])
-lon = list(data["LONGITUDE"])
-des = list(data["DESTINATION"])
-vis = list(data["VISITS"])
+latitude = list(data["LATITUDE"])
+longitude = list(data["LONGITUDE"])
+location_name = list(data["LOCATION_NAME"])
+visit_type = list(data["VISIT_TYPE"])
+# set initial zoom level at a particular focus point on the map
+base_map = folium.Map(location=[48.864716, 2.349014], zoom_start=2)
+feature_group = folium.FeatureGroup(name="Travel Map")
 
 
-def visit_times(visits):
-    if visits < 2:
-        return 'green'
-    elif 2 <= visits < 6:
-        return 'blue'
-    elif 6 <= visits < 11:
-        return 'yellow'
-    elif 11 <= visits < 16:
-        return 'orange'
-    else:
-        return 'red' #for 16 and upward
-    
+for lat, long, location, visit in zip(
+    latitude,
+    longitude,
+    location_name,
+    visit_type
+):
+    feature_group.add_child(folium.Marker(
+            location=[lat, long],
+            popup=str(location),
+            icon=folium.Icon(color=show_visit_category(visit)))
+            )
 
-base_map = folium.Map(location=[48.864716,2.349014], zoom_start=2)
 
-fg = folium.FeatureGroup(name="Travel Map")
-fg.add_child(folium.Marker(location=[47.608013, -122.335167], popup="Home Base", icon=folium.Icon(color='pink')))
+def show_visit_category(visit_type):
+    if visit_type == 1:
+        return 'orange'  # lived there
+    return 'blue'  # visited
 
-for lt, ln, ds, vs in zip(lat,lon,des,vis):
-    if vs <2:
-        fg.add_child(folium.Marker(location=[lt,ln], popup="Visited " + str(vs) + " time", icon=folium.Icon(color=visit_times(vs))))
-    else:
-        fg.add_child(folium.Marker(location=[lt,ln], popup="Visited " + str(vs) + " times", icon=folium.Icon(color=visit_times(vs))))
-        
 
-base_map.add_child(fg)
+base_map.add_child(feature_group)
 
 base_map.save("map_of_explorations.html")
 
@@ -58,9 +56,9 @@ base_map.save("map_of_explorations.html")
 #===============================================================================
 # print(data)
 # print(data.columns)
-# print(lat)
+# print(latitude)
 # print(lon)
-# print(des)
+#print(location_name)
 # print(help(folium.Marker))
 #===============================================================================
 
