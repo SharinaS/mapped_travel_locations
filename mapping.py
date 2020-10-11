@@ -27,6 +27,12 @@ base_map = folium.Map(location=[48.864716, 2.349014], zoom_start=2)
 feature_group = folium.FeatureGroup(name="Travel Map")
 
 
+def show_visit_category(visit_type):
+    if visit_type == 1:
+        return 'orange'  # lived there
+    return 'blue'  # visited
+
+
 for lat, long, location, visit in zip(
     latitude,
     longitude,
@@ -38,12 +44,6 @@ for lat, long, location, visit in zip(
             popup=str(location),
             icon=folium.Icon(color=show_visit_category(visit)))
             )
-
-
-def show_visit_category(visit_type):
-    if visit_type == 1:
-        return 'orange'  # lived there
-    return 'blue'  # visited
 
 
 base_map.add_child(feature_group)
