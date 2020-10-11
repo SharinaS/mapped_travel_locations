@@ -1,10 +1,10 @@
 '''
-Created on Jul 29, 2018
+Created on July, 2018; Updated and refactored October 2020
 
 @author: sharina stubbs
 
-Project description: A web-based mapping project of the places I've visited, with interactive pop-ups and color coding
-to identify number of times a place has been visited. Project uses folium, pandas, python; csv is used to store the data.
+Project Description: 
+A web-based mapping project of locations, with interactive pop-ups and color-coding. Project uses folium, pandas, python; csv is used to store the data.
 Note - dataframes converted into python lists to improve speed of program.
 
 Version: 1.0
@@ -16,7 +16,7 @@ import folium
 import pandas
 
 
-data = pandas.read_csv("places_visited.txt")
+data = pandas.read_csv("places_visited.csv")
 lat = list(data["LATITUDE"])
 lon = list(data["LONGITUDE"])
 des = list(data["DESTINATION"])
