@@ -1,82 +1,57 @@
 '''
-Created on Jul 29, 2018
+Created on July, 2018; Updated and refactored October 2020
 
 @author: sharina stubbs
 
-Project description: A web-based mapping project of the places I've visited, with interactive pop-ups and color coding
-to identify number of times a place has been visited. Project uses folium, pandas, python; csv is used to store the data.
-Note - dataframes converted into python lists to improve speed of program.
+Project Description:
+A web-based mapping project of locations, with interactive pop-ups and
+color-coding. Project uses folium, pandas, python; csv is used to store the 
+data.
 
-Version: 1.0
-
+Version: 2.0
 '''
-
 
 import folium
 import pandas
 
-
-data = pandas.read_csv("places_visited.txt")
-lat = list(data["LATITUDE"])
-lon = list(data["LONGITUDE"])
-des = list(data["DESTINATION"])
-vis = list(data["VISITS"])
-
-
-def visit_times(visits):
-    if visits < 2:
-        return 'green'
-    elif 2 <= visits < 6:
-        return 'blue'
-    elif 6 <= visits < 11:
-        return 'yellow'
-    elif 11 <= visits < 16:
-        return 'orange'
-    else:
-        return 'red' #for 16 and upward
-    
-
-base_map = folium.Map(location=[48.864716,2.349014], zoom_start=2)
-
-fg = folium.FeatureGroup(name="Travel Map")
-fg.add_child(folium.Marker(location=[47.608013, -122.335167], popup="Home Base", icon=folium.Icon(color='pink')))
-
-for lt, ln, ds, vs in zip(lat,lon,des,vis):
-    if vs <2:
-        fg.add_child(folium.Marker(location=[lt,ln], popup="Visited " + str(vs) + " time", icon=folium.Icon(color=visit_times(vs))))
-    else:
-        fg.add_child(folium.Marker(location=[lt,ln], popup="Visited " + str(vs) + " times", icon=folium.Icon(color=visit_times(vs))))
-        
-
-base_map.add_child(fg)
-
-base_map.save("map_of_explorations.html")
+# read data from the csv file
+file_data = pandas.read_csv("places_visited.csv")
+# access columns of data in csv file
+latitude = list(file_data["LATITUDE"])
+longitude = list(file_data["LONGITUDE"])
+location_name = list(file_data["LOCATION_NAME"])
+visit_type = list(file_data["VISIT_TYPE"])
+# set initial zoom level at a particular focus point on the map
+base_map = folium.Map(location=[48.864716, 2.349014], zoom_start=2)
+# create a feature group to populate base map with
+homes_and_visits = folium.FeatureGroup(name="My Travel Map")
 
 
+def add_markers(latitude, longitude, location_name, visit_type):
+    for lat, long, info, color in zip(
+        latitude,
+        longitude,
+        location_name,
+        visit_type
+    ):
+        # set placement of and add pop-ups to markers
+        homes_and_visits.add_child(folium.Marker(
+                location=[lat, long],
+                popup=str(info),
+                icon=folium.Icon(color=show_visit_category(color)))
+                )
 
 
-#===============================================================================
-# print(data)
-# print(data.columns)
-# print(lat)
-# print(lon)
-# print(des)
-# print(help(folium.Marker))
-#===============================================================================
+def show_visit_category(visit_type):
+    if visit_type == 1:
+        return 'orange'  # markers that are orange are home locations
+    return 'blue'  # markers that are blue are locations that were visited
 
 
+def populate_map():
+    add_markers(latitude, longitude, location_name, visit_type)
+    base_map.add_child(homes_and_visits)
+    base_map.save("exploration_map.html")
 
 
-
-    
-
-
-
-
-
-
-
-
-
-
-
+populate_map()
