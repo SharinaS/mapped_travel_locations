@@ -7,7 +7,7 @@ A web-based mapping project built with:
 * Pandas - a Python data manipulation library
 * A .csv file for data storage
 
-The output of the program is a global map with markers placed in locations determined by geographic coordinates stored in a .csv file. When the user clicks on color-coded markers, additional information appears, such as city name, as a pop-up (determined, again, by data in the .csv).
+The output of the program is a global map with markers placed in locations determined by geographic coordinates stored in a .csv file. Each location is defined by decimal degrees. When the user clicks on color-coded markers, additional information appears, such as city name, as a pop-up (determined, again, by data in the .csv).
 
 ![screenshot of map](images/demo-map.png)
 
@@ -29,7 +29,7 @@ Sint Eustatius,2,17.4826800,-62.9832400
 |LATITUDE|The latitude of the destination|47.46028|
 |LONGITUDE|The longitude of the destination|-123.802838|
 
-An online search for locations coordinates will quickly provide you with latitude and longitude values.
+An online search for "<<location>> decimal degrees" will quickly provide you with latitude and longitude values.
 
 ## How To Use this Repo to Run the Program and Build the Map
 
