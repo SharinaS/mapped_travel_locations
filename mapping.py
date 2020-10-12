@@ -27,25 +27,25 @@ base_map = folium.Map(location=[48.864716, 2.349014], zoom_start=2)
 homes_and_visits = folium.FeatureGroup(name="My Travel Map")
 
 
-def show_visit_category(visit_type):
-    if visit_type == 1:
-        return 'orange'  # markers that are orange are home locations
-    return 'blue'  # markers that are blue are locations that were visited
-
-
 def add_markers(latitude, longitude, location_name, visit_type):
-    for lat, long, location, visit in zip(
+    for lat, long, info, color in zip(
         latitude,
         longitude,
         location_name,
         visit_type
     ):
-        # add location data to feature_group
+        # set placement of and add pop-ups to markers
         homes_and_visits.add_child(folium.Marker(
                 location=[lat, long],
-                popup=str(location),
-                icon=folium.Icon(color=show_visit_category(visit)))
+                popup=str(info),
+                icon=folium.Icon(color=show_visit_category(color)))
                 )
+
+
+def show_visit_category(visit_type):
+    if visit_type == 1:
+        return 'orange'  # markers that are orange are home locations
+    return 'blue'  # markers that are blue are locations that were visited
 
 
 def populate_map():
@@ -55,32 +55,3 @@ def populate_map():
 
 
 populate_map()
-
-
-
-
-#===============================================================================
-# print(data)
-# print(data.columns)
-# print(latitude)
-# print(lon)
-#print(location_name)
-# print(help(folium.Marker))
-#===============================================================================
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
